@@ -1,42 +1,71 @@
-* {
-  background-color: rgb(32, 128, 128);
+body {
   text-align: center;
-  margin: 0;
+  font-family: 'Times New Roman', Times, sans-serif;
+  background: rgb(0,128,128);
+  color: white;
+}
+
+.wrapper {
+  width: 40%;
+  margin: 80px auto;
+}
+
+h1 {
+  font-size: 40px;
+}
+
+ul {
+  list-style: none;
+}
+
+input {
+  background-color: rgb(5,102,103);
+  border: none;
+  padding: 8px;
+  line-height: 40px;
+  height: 40px;
+  width: 100%;
+  border-radius: 5px;
+  color: white;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 20px;
+  box-sizing: border-box;
+}
+
+.task-area {
+  width: 80%;
+  margin: 40px auto;
+}
+
+.inputArea::placeholder {
+  color: rgb(192, 192, 192);
+}
+
+.todolist {
   padding: 0;
 }
 
-ul,li{
-  list-style: none;
-}
-ul{
-  margin:25px auto 0;
-  width: 200px;
-}
-li {
-  background: rgb(20, 95, 95);
-  margin: 10px 0 0 0;
-}
-li span{
-  background: rgb(20, 95, 95);
-  color:red;
+/* アイコンのポジション位置の親要素 */
+.todo {
+  margin-bottom: 10px;
+  position: relative;
 }
 
-.App {
-  color:#fff;
-  margin: 100px 0 0 0;
+.todo input {
+  height: 60px;
 }
 
-input{
-  width: 200px;
-  margin: 15px auto 0;
-  color: #fff;
-  border: solid 2px #454545;
-}
-h2{
-  font-size: 45px;
+/* Todoリストのみの高さの指定 */
+.editing {
+  background-color: rgb(3, 197, 197); /* 編集中の背景色を変更 */
 
 }
-h3{
-  font-size: 30px;
-  margin:20px 0 0 0;
+
+/* アイコンのポジション微調整 */
+.far {
+  position: absolute;
+  color: yellow;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
 }

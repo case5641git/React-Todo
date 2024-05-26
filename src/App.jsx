@@ -1,50 +1,34 @@
 import {useState} from 'react'
+import Title from './components/Title'
+import Input from './components/Input'
+import Search from './components/Search'
+import Todolist from './components/Todolist'
 import './App.css'
 
 export const App = () => {
-  const [todos, setTodos] = useState([]) //Todoリスト
-  const [newTodo, setNewTodo] = useState('') //入力欄
-  
-  const handleAddTodo = e => {
-    if(e.key === 'Enter' && newTodo.trim() !== '') {
-      setTodos([...todos, newTodo.trim()])
-      setNewTodo('')
+  const initialTodoState = [
+    {
+      task: 'Todo1'
+    },
+    {
+      task: 'Todo2'
     }
-  }
+  ]
 
-  const handleInputChange = e => {
-    setNewTodo(e.target.value);
-  }
-
-  const handleDelTodo =  index => {
-    const delTodoList = [...todos]
-    delTodoList.splice(index, 1)
-    setTodos(delTodoList)
-  }
+  const [todos, setTodos] = useState(initialTodoState) //Todoリスト
+  const [searchKeyword, setSearchKeyword] = useState('') //検索欄
+  const [editingIndex, setEditingIndex] = useState(null) //編集中のインデックス
   
+  const handleSearch = event => {
+    setSearchKeyword(event.target.value)
+  }  
 
   return (
-    <div className="App">
-      <h2>Todo List</h2>
-      <section>
-        <h3>ADD TASK</h3>
-        <input 
-          type="text" 
-          placeholder="New Todo" 
-          value={newTodo} 
-          onChange={handleInputChange}
-          onKeyDown={handleAddTodo}
-        />
-      </section>
-      <section>
-        <ul>
-          {todos.map((todo, index) => (
-            <li key={index}>
-              {todo}<span onClick={()=>handleDelTodo(index)}>x</span>
-            </li>
-          ))}
-        </ul>
-      </section>
+    <div className="wrapper">
+      <Title title="Todo List"></Title>
+      <Input todos={todos} setTodos={setTodos}></Input>
+      <Search todos={todos} value={searchKeyword} onChange={handleSearch}></Search>
+      <Todolist todos={todos} setTodos={setTodos} searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} editingIndex={editingIndex} setEditingIndex={setEditingIndex}></Todolist>
     </div>
   )
 }
