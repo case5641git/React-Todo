@@ -1,34 +1,46 @@
-import {useState} from 'react'
-import Title from './components/Title'
-import Input from './components/Input'
-import Search from './components/Search'
-import Todolist from './components/Todolist'
-import './App.css'
+import Title from "./components/Title";
+import Input from "./components/Input";
+import Search from "./components/Search";
+import Todolist from "./components/Todolist";
+import "./App.css";
+import useTodos from "./hooks/useTodos";
 
-export const App = () => {
-  const initialTodoState = [
-    {
-      task: 'Todo1'
-    },
-    {
-      task: 'Todo2'
-    }
-  ]
-
-  const [todos, setTodos] = useState(initialTodoState) //Todoリスト
-  const [searchKeyword, setSearchKeyword] = useState('') //検索欄
-  const [editingIndex, setEditingIndex] = useState(null) //編集中のインデックス
-  
-  const handleSearch = event => {
-    setSearchKeyword(event.target.value)
-  }  
+const App = () => {
+  const {
+    todos,
+    newTodo,
+    searchKeyword,
+    editingIndex,
+    setEditingIndex,
+    handleSubmit,
+    handleNewTodo,
+    handleSearch,
+    handleDelTodo,
+    handleOnEdit,
+    handleKeyPress,
+  } = useTodos();
 
   return (
     <div className="wrapper">
       <Title title="Todo List"></Title>
-      <Input todos={todos} setTodos={setTodos}></Input>
-      <Search todos={todos} value={searchKeyword} onChange={handleSearch}></Search>
-      <Todolist todos={todos} setTodos={setTodos} searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} editingIndex={editingIndex} setEditingIndex={setEditingIndex}></Todolist>
+      <Input
+        todos={todos}
+        newTodo={newTodo}
+        handleNewTodo={handleNewTodo}
+        handleSubmit={handleSubmit}
+      ></Input>
+      <Search handleSearch={handleSearch}></Search>
+      <Todolist
+        todos={todos}
+        searchKeyword={searchKeyword}
+        editingIndex={editingIndex}
+        handleOnEdit={handleOnEdit}
+        setEditingIndex={setEditingIndex}
+        handleKeyPress={handleKeyPress}
+        handleDelTodo={handleDelTodo}
+      ></Todolist>
     </div>
-  )
-}
+  );
+};
+
+export default App;

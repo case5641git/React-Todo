@@ -1,34 +1,20 @@
-import React, {useState} from "react"
+import React from "react";
 
-const Input = props => {
-    const [newTodo, setNewTodo] = useState('')
+const Input = (props) => {
+  return (
+    <section>
+      <h2>ADD TASK</h2>
+      <form onSubmit={props.handleSubmit} className="task-area">
+        <input
+          className="inputArea"
+          type="text"
+          value={props.newTodo}
+          placeholder="New Todo"
+          onChange={props.handleNewTodo}
+        />
+      </form>
+    </section>
+  );
+};
 
-    const handleSubmit = event => {
-        event.preventDefault()
-        if(newTodo === '') return
-        props.setTodos(todos => [...todos, {task:newTodo}])
-        setNewTodo('')
-    }
-
-    const handleNewTodo = event => {
-        setNewTodo(event.target.value)
-    }
-
-    return (
-        <section>
-            <h2>ADD TASK</h2>
-            <form 
-                onSubmit={handleSubmit} 
-                className="task-area">
-                    <input 
-                        className="inputArea" t
-                        ype="text" value={newTodo} 
-                        placeholder='New Todo' 
-                        onChange={handleNewTodo}
-                    />
-            </form>
-        </section>
-    )
-}
-
-export default Input
+export default Input;
