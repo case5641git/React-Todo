@@ -1,63 +1,78 @@
-import { useState } from "react";
-import { INIT_TODO_LIST } from "../constants/data";
+import { useState, useCallback } from "react";
+import { INIT_TODO_LIST, INIT_UNIQUE_ID } from "../constants/data.js";
 
-const useTodos = () => {
-  const [newTodo, setNewTodo] = useState("");
-  const [todos, setTodos] = useState(INIT_TODO_LIST); //Todoリスト
-  const [searchKeyword, setSearchKeyword] = useState(""); //検索欄
-  const [editingIndex, setEditingIndex] = useState(null); //編集中の
+export const useTodo = () => {
+  const [originTodoList, setOriginTodoList] = useState(INIT_TODO_LIST);
+  const [uniqueId, setUniqueId] = useState(INIT_UNIQUE_ID);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (newTodo === "") return;
-    setTodos((todos) => [...todos, { task: newTodo }]);
-    setNewTodo("");
-  };
+  console.log("originTodoList at useTodo:", originTodoList);
+  /**
+   * Todo新規登録処理
+   * @param {*} title
+   * @param {*} content
+   */
+  const addTodo = useCallback(
+    (title, content) => {
+      const nextUniqueId = uniqueId + 1;
+      const newTodo = [
+        ...originTodoList,
+        {
+          id: nextUniqueId,
+          title: title,
+          content: content,
+        },
+      ];
+      setOriginTodoList(newTodo);
+      setUniqueId(nextUniqueId);
+    },
+    [originTodoList, uniqueId]
+  );
 
-  const handleNewTodo = (event) => {
-    setNewTodo(event.target.value);
-  };
+  /**
+   * Todo更新処理
+   * @param {*} id
+   * @param {*} title
+   * @param {*} content
+   * @type {(function(*, *, *): void) | *}
+   */
+  const updateTodo = useCallback(
+    (id, title, content) => {
+      const updatedTodoList = originTodoList.map((todo) => {
+        if (id === todo.id) {
+          return {
+            id: todo.id,
+            title: title,
+            content: content,
+          };
+        }
+        return todo;
+      });
+      setOriginTodoList(updatedTodoList);
+    },
+    [originTodoList]
+  );
 
-  const handleSearch = (event) => {
-    setSearchKeyword(event.target.value);
-  };
-
-  const handleDelTodo = (index) => {
-    const newTodos = (todos) =>
-      [...todos].filter((todo, todoIndex) => todoIndex !== index);
-    setTodos(newTodos);
-  };
-
-  const handleOnEdit = (index, value) => {
-    const newTodos = todos.map((todo, todoIndex) => {
-      if (todoIndex === index) {
-        return { ...todo, task: value };
+  /**
+   * Todo削除処理
+   * @param {number} targetId
+   * @param {string} targetTitle
+   */
+  const deleteTodo = useCallback(
+    (targetId, targetTitle) => {
+      if (window.confirm(`「${targetTitle}」のtodoを削除しますか？`)) {
+        const newTodoList = originTodoList.filter(
+          (todo) => todo.id !== targetId
+        );
+        setOriginTodoList(newTodoList);
       }
-      return todo;
-    });
-    setTodos(newTodos);
-  };
-
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      event.target.blur();
-      setEditingIndex(null);
-    }
-  };
+    },
+    [originTodoList]
+  );
 
   return {
-    todos,
-    newTodo,
-    searchKeyword,
-    editingIndex,
-    setEditingIndex,
-    handleSubmit,
-    handleNewTodo,
-    handleSearch,
-    handleDelTodo,
-    handleOnEdit,
-    handleKeyPress,
+    originTodoList,
+    addTodo,
+    updateTodo,
+    deleteTodo,
   };
 };
-
-export default useTodos;
