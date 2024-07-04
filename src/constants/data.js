@@ -1,8 +1,14 @@
 export const INIT_TODO_LIST = [
   {
-    task: "Todo1",
+    id: 1,
+    title: "Todo1",
+    content: "Todo1 content",
   },
   {
-    task: "Todo2",
+    id: 2,
+    title: "Todo2",
+    content: "Todo1 content",
   },
 ];
+
+export const INIT_UNIQUE_ID = INIT_TODO_LIST.length;
